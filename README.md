@@ -2,7 +2,7 @@
 
 This mod provides a monoidal_effects monoid for handling armor groups. It
 provides the ```"armor"``` monoid, and a way to register new damage types
-for players.
+for players. It is also compatible with 3d_armor.
 
 Using the monoid
 ================
