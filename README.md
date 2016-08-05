@@ -11,8 +11,8 @@ multipliers. For example, if I wanted to apply an effect granting arcane
 damage resistance but fleshy damage vulnerability, I could do <br/>
 ```
 local tab = {
-  arcane = 50,
-  fleshy = 150,
+  arcane = 0.5,
+  fleshy = 1.5,
 }
 
 armor_monoid.monoid:add_change(player, tab, "mymod:arcane_boost")

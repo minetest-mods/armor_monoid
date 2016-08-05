@@ -182,7 +182,7 @@ armor.set_player_armor = function(self, player)
 	player_monoids.jump:del_change(player, "armor_monoid:compat")
 	player_monoids.gravity:del_change(player, "armor_monoid:compat")
 	
-	armor_monoid.add_change(player, { fleshy = armor_groups.fleshy / 100 },
+	armor_monoid.monoid:add_change(player, { fleshy = armor_groups.fleshy / 100 },
 		"armor_monoid:compat")
 	player_monoids.speed:add_change(player, physics_o.speed,
 		"armor_monoid:compat")
