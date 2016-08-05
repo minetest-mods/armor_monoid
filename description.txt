@@ -1,1 +1,1 @@
-A monoidal_effects monoid for armor
+A player_monoids monoid for armor

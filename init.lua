@@ -22,7 +22,7 @@ end
 -- For example { fleshy = 0.5, fire = 1.2 } would mean that a player takes
 -- half fleshy damage and 120% fire damage. Nil values are the same as putting
 -- 1. The final multipliers are multiplied to the base damage for the group.
-monoidal_effects.register_monoid("armor", {
+armor_monoid.monoid = player_monoids.make_monoid({
 	combine = function(tab1, tab2)
 		local res = {}
 		
@@ -101,25 +101,6 @@ end
 if not minetest.global_exists("armor") then return end
 
 
-monoidal_effects.register_type("armor_monoid:compat_armor", {
-	disp_name = "3D Armor Compatibility",
-	dynamic = true,
-	monoids = { armor = true },
-	hidden = true,
-	cancel_on_death = false,
-	values = { armor = {} },
-})
-
-monoidal_effects.register_type("armor_monoid:compat_phys", {
-	disp_name = "3D Armor Physics Compatibility",
-	dynamic = true,
-	monoids = { speed = true, jump = true, gravity = true },
-	hidden = true,
-	cancel_on_death = false,
-	values = { speed = 1, jump = 1, gravity = 1 },
-})
-
-
 -- Armor override
 armor.set_player_armor = function(self, player)
 	local name, player_inv = armor:get_valid_player(player, "[set_player_armor]")
@@ -196,13 +177,19 @@ armor.set_player_armor = function(self, player)
 		armor_groups.fleshy = 100 - armor_level
 	end
 
-	monoidal_effects.cancel_effect_type("armor_monoid:compat_armor", name)
-	monoidal_effects.cancel_effect_type("armor_monoid:compat_phys", name)
+	armor_monoid.monoid:del_change(player, "armor_monoid:compat")
+	player_monoids.speed:del_change(player, "armor_monoid:compat")
+	player_monoids.jump:del_change(player, "armor_monoid:compat")
+	player_monoids.gravity:del_change(player, "armor_monoid:compat")
 	
-	monoidal_effects.apply_effect("armor_monoid:compat_armor", "perm", name, {
-		armor = { fleshy = armor_groups.fleshy / 100 },
-	})
-	monoidal_effects.apply_effect("armor_monoid:compat_phys", "perm", name, physics_o)
+	armor_monoid.add_change(player, { fleshy = armor_groups.fleshy / 100 },
+		"armor_monoid:compat")
+	player_monoids.speed:add_change(player, physics_o.speed,
+		"armor_monoid:compat")
+	player_monoids.jump:add_change(player, physics_o.jump,
+		"armor_monoid:compat")
+	player_monoids.gravity:add_change(player, physics_o.gravity,
+		"armor_monoid:compat")
 
 	self.textures[name].armor = armor_texture
 	self.textures[name].preview = preview

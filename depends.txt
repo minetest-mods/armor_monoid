@@ -1,2 +1,2 @@
-monoidal_effects
+player_monoids
 3d_armor?

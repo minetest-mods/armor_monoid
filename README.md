@@ -1,23 +1,21 @@
 #The Armor Monoid
 
-This mod provides a monoidal_effects monoid for handling armor groups. It
-provides the ```"armor"``` monoid, and a way to register new damage types
+This mod provides a player_monoids monoid for handling armor groups. It
+provides a monoid for damage resistance, and a way to register new damage types
 for players. It is also compatible with 3d_armor.
 
 Using the monoid
 ================
 The values in the monoid are tables mapping armor group names to damage
-multipliers. For example, if I wanted to register an effect granting arcane
+multipliers. For example, if I wanted to apply an effect granting arcane
 damage resistance but fleshy damage vulnerability, I could do <br/>
 ```
-monoidal_effects.register_effect_type("magic_barrier", {
-  disp_name = "Magic Barrier",
-  tags = { magical = 1 },
-  monoids = { armor = true },
-  cancel_on_death = true,
-  values = { armor = { fleshy = 1.5, arcane = 0.3 } },
-  icon = "magic_barrier.png",
-})
+local tab = {
+  arcane = 50,
+  fleshy = 150,
+}
+
+armor_monoid.monoid:add_change(player, tab, "mymod:arcane_boost")
 ```
 
 Registering damage types
