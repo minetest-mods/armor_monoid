@@ -2,7 +2,7 @@
 
 This mod provides a player_monoids monoid for handling armor groups. It
 provides a monoid for damage resistance, and a way to register new damage types
-for players. It is also compatible with 3d_armor.
+for players.
 
 Using the monoid
 ================
