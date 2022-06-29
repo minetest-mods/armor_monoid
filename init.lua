@@ -73,27 +73,21 @@ armor_monoid.monoid = player_monoids.make_monoid({
 
 		join_handled[player:get_player_name()] = true
 
-		if player then
-			player:set_armor_groups(final)
-		end
+		player:set_armor_groups(final)
 	end,
 })
 
 
 -- If the monoid has not fired yet (or won't fire)
 minetest.register_on_joinplayer(function(player)
-	if player then
-		if not join_handled[player:get_player_name()] then
-			player:set_armor_groups(armor_groups)
-		end
+	if not join_handled[player:get_player_name()] then
+		player:set_armor_groups(armor_groups)
 	end
 end)
 
 
 minetest.register_on_leaveplayer(function(player)
-	if player then
 		join_handled[player:get_player_name()] = nil
-	end
 end)
 
 
