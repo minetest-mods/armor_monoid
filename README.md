@@ -40,12 +40,21 @@ monoid.
 `fall_damage_add_percent`
 -------------------------
 
-The armor monoid handles this group exactly like normal armor groups that have a
-base value of 100, but because its value is multiplicative with built-in fall
-damage, its final value is internally offset by -100 to respect this behavior.
+The `fall_damage_add_percent` armor group controls how much additional damage
+that a player will incur when falling from a high height. The armor monoid
+handles this group exactly like normal armor groups that have a base value of
+100.
+
+The armor monoid uses the following range of values for the
+`fall_damage_add_percent` armor group:
+
+- `value = 100`: player takes normal fall damage (100%)
+- `value = 0`: player takes no fall damage (0%)
+- `value = X`: player takes X% less fall damage (1%-99%)
+- default value: 100
 
 To grant a player fall damage reduction, use the `fall_damage_add_percent` group
-as you would any normal damage group:
+as you would any normal armor group:
 
 ```lua
 armor_monoid.monoid:add_change(player,{fall_damage_add_percent=0.5},"mymod:half_fall_damage")
@@ -54,22 +63,18 @@ armor_monoid.monoid:add_change(player,{fall_damage_add_percent=0.5},"mymod:half_
 `immortal`
 ----------
 
-The armor monoid treats any value of 1 or less as an indication that a player
-can suffer damage. Conversely, any value greater than 1 will make a player
-immune to all damage.
+The `immortal` armor group controls whether or not a player can suffer damage
+and experience drowning. Due to limitations of this monoid, the values of this
+armor group are handled differently than most armor groups.
+
+The armor monoid uses the following values for the `immortal` armor group:
+
+- `value <= 1`: player is not immortal, subject to damage and drowning
+- `value > 1`: player is immortal, will not suffer damage and cannot drown
+- default value: 1
 
 To grant a player immortality, set this group to a value greater than 1 like so:
 
 ```lua
 armor_monoid.monoid:add_change(player,{immortal=2},"mymod:immortality")
 ```
-
-Note that this is not in line with the typical use of the `immortal` armor
-group which usually has a value of 0 (not immortal) or 1 (immortal) due to the
-fact that armor monoid changes are multiplicative, so if the group is set to 0
-to revoke immortality, then no other changes can ever influence the armor group.
-
-This is largely a technical detail. If you use this mod to manage armor groups,
-then use a value of 1 or less to make a player mortal and a value greater than 1
-to make a player immortal. The internal implementation will translate these
-values to an actual armor group value of 0 or 1.
