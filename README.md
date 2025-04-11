@@ -47,7 +47,7 @@ damage, its final value is internally offset by -100 to respect this behavior.
 To grant a player fall damage reduction, use the `fall_damage_add_percent` group
 as you would any normal damage group:
 
-```
+```lua
 armor_monoid.monoid:add_change(player,{fall_damage_add_percent=0.5},"mymod:half_fall_damage")
 ```
 
@@ -60,7 +60,7 @@ immune to all damage.
 
 To grant a player immortality, set this group to a value greater than 1 like so:
 
-```
+```lua
 armor_monoid.monoid:add_change(player,{immortal=2},"mymod:immortality")
 ```
 
