@@ -1,7 +1,11 @@
 
 armor_monoid = {}
 
-local armor_groups = { fleshy = 100 }
+local armor_groups = {
+	fleshy = 100,
+	fall_damage_add_percent = 100,
+	immortal = 1,
+}
 
 armor_monoid.registered_groups = armor_groups
 
@@ -70,6 +74,15 @@ armor_monoid.monoid = player_monoids.make_monoid({
 				final[k] = final[k] * v
 			end
 		end
+
+		-- fall_damage_add_percent is a special armor group that has an inherent
+		-- value of 0 rather than 100, so its final value is offset by -100 here
+		final.fall_damage_add_percent = final.fall_damage_add_percent - 100
+
+		-- immortal is a special armor group that must be either 0 or 1 to indicate
+		-- mortality or immortality, respectively, so its final value is constrained
+		-- here
+		final.immortal = final.immortal > 1 and 1 or 0
 
 		join_handled[player:get_player_name()] = true
 
